@@ -1,0 +1,141 @@
+// Class representing a node in a doubly linked list
+class Node {
+    int data;
+    Node prev;
+    Node next;
+
+    // Constructor
+    public Node(int data) {
+        this.data = data;
+        this.prev = null;
+        this.next = null;
+    }
+}
+
+// Class representing a doubly linked list
+public class DoublyLinkedList {
+    Node head;
+
+    // Constructor
+    public DoublyLinkedList() {
+        this.head = null;
+    }
+
+    // Add a node to the front of the list
+    public void addToFront(int data) {
+        Node newNode = new Node(data);
+
+        if (head == null) {
+            head = newNode;
+        } else {
+            newNode.next = head;
+            head.prev = newNode;
+            head = newNode;
+        }
+    }
+
+    // Add a node to the end of the list
+    public void addToEnd(int data) {
+        Node newNode = new Node(data);
+        
+        if (head == null) {
+            head = newNode;
+            return;
+        }
+
+        Node last = head;
+        while (last.next != null) {
+            last = last.next;
+        }
+
+        last.next = newNode;
+        newNode.prev = last;
+    }
+
+    // Remove a node with a specific value
+    public void removeNode(int data) {
+        if (head == null) {
+            return;
+        }
+
+        Node current = head;
+
+        // If head node itself holds the data to be deleted
+        if (current != null && current.data == data) {
+            head = current.next;
+            if (head != null) {
+                head.prev = null;
+            }
+            return;
+        }
+
+        // Search for the node to be deleted
+        while (current != null && current.data != data) {
+            current = current.next;
+        }
+
+        // If node was not found
+        if (current == null) {
+            return;
+        }
+
+        // Unlink the node
+        if (current.next != null) {
+            current.next.prev = current.prev;
+        }
+        if (current.prev != null) {
+            current.prev.next = current.next;
+        }
+    }
+
+    // Print the list from head to end
+    public void printList() {
+        Node current = head;
+
+        System.out.print("Doubly Linked List: ");
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.next;
+        }
+        System.out.println();
+    }
+
+    // Print the list in reverse order (from tail to head)
+    public void printReverseList() {
+        if (head == null) {
+            return;
+        }
+
+        Node current = head;
+
+        // Traverse to the end of the list
+        while (current.next != null) {
+            current = current.next;
+        }
+
+        System.out.print("Reverse Doubly Linked List: ");
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.prev;
+        }
+        System.out.println();
+    }
+
+    // Main method to demonstrate the operations
+    public static void main(String[] args) {
+        DoublyLinkedList dll = new DoublyLinkedList();
+
+        dll.addToEnd(10);
+        dll.addToEnd(20);
+        dll.addToEnd(30);
+        dll.printList();
+
+        dll.addToFront(5);
+        dll.printList();
+
+        dll.removeNode(20);
+        dll.printList();
+
+        dll.printReverseList();
+    }
+}
